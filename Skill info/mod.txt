@@ -1,0 +1,14 @@
+{
+	"blt_version" : 2,
+	"name" : "skill info",
+	"description" : "",
+	"author" : "",
+	"contact" : "",
+	"version" : "1.0.0",
+	"image" : "icon.png",
+	"color" : "0.15 0.15 0.15",
+	"hooks" :
+	[
+		{"hook_id" : "lib/managers/menumanager", "script_path" : "lua/MenuManager.lua"}
+	]
+}
