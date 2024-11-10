@@ -45,8 +45,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_Skillinfo", function(m
 end)
 
 function MenuCallbackHandler:Skill_Show()
-	log("skill_show")
-	if managers.network:session() then
+	if managers.network:session() and Utils:IsInHeist()then
 		Skillinfo:Information_To_HUD(managers.network:session():peer(_G.LuaNetworking:LocalPeerID()))
 		for _, peer in pairs(managers.network:session():peers()) do
 			Skillinfo:Information_To_HUD(peer)
@@ -119,16 +118,18 @@ function Skillinfo:InfoPanel(message, color, message2, message3, message4)
 			Skillinfo.fontsize = 14
 		elseif RenderSettings.resolution.x >= 1024 and RenderSettings.resolution.x < 1360 then
 			Skillinfo.fontsize = 18
-		elseif RenderSettings.resolution.x >= 1440 and RenderSettings.resolution.x < 1680 then
+		elseif RenderSettings.resolution.x >= 1360 and RenderSettings.resolution.x < 1920 then
 			Skillinfo.fontsize = 22
-		else
+		elseif RenderSettings.resolution.x >= 1920 and RenderSettings.resolution.x < 2560 then
 			Skillinfo.fontsize = 28
+		else
+			Skillinfo.fontsize = 32
 		end
 		Skillinfo.stats = {}
 		Skillinfo.mod = Skillinfo.overlay:panel():text{name = "mod", x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/4) + 4.7/9 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = Color("ffffff"), layer = 1}
 		local pos = 5
 		for i=1, num_player_slots do
-			Skillinfo.stats[i] = Skillinfo.overlay:panel():text{name = "name" .. i, x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/4) + pos/9 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = tweak_data.chat_colors[i], layer = 1}
+			Skillinfo.stats[i] = Skillinfo.overlay:panel():text{name = "name" .. i, x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/1) + pos/4 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = tweak_data.chat_colors[i], layer = 1}
 			pos = pos + 0.3
 		end
 	end
