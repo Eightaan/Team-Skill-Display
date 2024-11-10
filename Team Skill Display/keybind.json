@@ -1,0 +1,19 @@
+{
+	"menu_id" : "skillinfo_options_menu",
+	"parent_menu_id" : "blt_options",
+	"title" : "skillinfo_options",
+	"description" : "skillinfo_options_desc",
+	"items" : 
+	[
+		{
+			"type" : "keybind",
+			"id" : "skillinfo_skill_overlay",
+			"title" : "skillinfo_team_skill_title",
+			"description" : "skillinfo_team_skill_desc",
+			"keybind_id" : "Skill_display_id",
+			"run_in_menu" : true,
+			"run_in_game" : true,
+			"func" : "SkillInfo"
+		}
+	]
+}
