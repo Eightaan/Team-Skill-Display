@@ -3,7 +3,6 @@ local display_time = 8
 if not _G.Skillinfo then
 	_G.Skillinfo = _G.Skillinfo or {}
 	Skillinfo._path = ModPath
-    Skillinfo._data_path = SavePath .. "skillinfo.json"
     Skillinfo._data = {} 
 	Skillinfo.Players = {}
 	for i=1,4 do
@@ -13,22 +12,6 @@ if not _G.Skillinfo then
 		end
 	end
 end
-
-function Skillinfo:Save()
-    local file = io.open( self._data_path, "w+" )
-	if file then
-	   	file:write( json.encode( self._data ) )
-	    file:close()
-    end
-end
-
-function Skillinfo:Load()
-   	local file = io.open( self._data_path, "r" )
-   	if file then
-   		self._data = json.decode( file:read("*all") )
-   		file:close()
-   	end
-end
 	
 Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_Skillinfo", function( loc )
     loc:load_localization_file( Skillinfo._path .. "loc/en.json")
@@ -37,9 +20,7 @@ end)
 Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_Skillinfo", function(menu_manager)
 	MenuCallbackHandler.SkillInfo = function(self)
 	    MenuCallbackHandler:Skill_Show()
-		Skillinfo:Save()
     end
-	Skillinfo:Load()
 	MenuHelper:LoadFromJsonFile(Skillinfo._path .. "keybind.json", Skillinfo, Skillinfo._data)
 end)
 
@@ -120,7 +101,6 @@ function Skillinfo:InfoPanel()
             Skillinfo.fontsize = 32
         end
         Skillinfo.stats = {}
-        Skillinfo.display = Skillinfo.overlay:panel()
         local pos = 5
         -- Set up stats display for each player
         for i=1, 4 do
@@ -128,7 +108,6 @@ function Skillinfo:InfoPanel()
             pos = pos + 0.3
         end
     end
-    Skillinfo.display:show()
 
     -- Display the simplified player stats
     for i=1,4 do
@@ -141,7 +120,6 @@ function Skillinfo:InfoPanel()
     -- Hide after the display time
     DelayedCalls:Add("Skillinfo:Timed_Remove", display_time, function()
         if Skillinfo.overlay then
-            Skillinfo.display:hide()
             for i=1,4 do
                 Skillinfo.stats[i]:hide()
             end
