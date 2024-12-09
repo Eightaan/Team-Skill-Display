@@ -8,6 +8,7 @@
 	"color" : "0.15 0.15 0.15",
 	"hooks" :
 	[
-		{"hook_id" : "lib/managers/menumanager", "script_path" : "StatDisplay.lua"}
+		{"hook_id" : "lib/managers/menumanager", "script_path" : "StatDisplay.lua"},
+		{"hook_id" : "lib/network/base/basenetworksession", "script_path" : "network.lua"}
 	]
 }

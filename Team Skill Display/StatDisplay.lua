@@ -94,18 +94,28 @@ function Skillinfo:Text_Formatting(skills, perk_deck, completion)
 	end
 end
 
+-- Adding a function to clear a player's data when they disconnect
+function Skillinfo:RemovePlayerData(peer_id)
+    -- Check if the peer exists in the Players table
+    if Skillinfo.Players[peer_id] then
+        -- Reset their skill info
+        Skillinfo.Players[peer_id] = {}
+        -- Optionally, you can also clear any other relevant data for this player
+    end
+end
+
 function Skillinfo:Information_To_HUD(peer)
-	if peer ~= nil then
-		if peer:is_outfit_loaded() then
-			local skills_perk_deck_info = string.split(peer:skills(), "-") or {}
-			if #skills_perk_deck_info == 2 then
-				local skills = string.split(skills_perk_deck_info[1], "_")
-				local perk_deck = string.split(skills_perk_deck_info[2], "_")
-				local p = managers.localization:text("menu_st_spec_" .. perk_deck[1])
-				Skillinfo.Players[peer:id()][3] = peer:name() .. Skillinfo:Text_Formatting(skills, p, perk_deck[2])	
-			end
-		end
-	end
+    if peer ~= nil then
+        if peer:is_outfit_loaded() then
+            local skills_perk_deck_info = string.split(peer:skills(), "-") or {}
+            if #skills_perk_deck_info == 2 then
+                local skills = string.split(skills_perk_deck_info[1], "_")
+                local perk_deck = string.split(skills_perk_deck_info[2], "_")
+                local p = managers.localization:text("menu_st_spec_" .. perk_deck[1])
+                Skillinfo.Players[peer:id()][3] = peer:name() .. Skillinfo:Text_Formatting(skills, p, perk_deck[2])    
+            end
+        end
+    end
 end
 
 function Skillinfo:InfoPanel(message, color, message2, message3, message4)
