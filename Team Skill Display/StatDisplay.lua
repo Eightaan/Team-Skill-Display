@@ -1,5 +1,7 @@
+-- Display time for the overlay
 local display_time = 8
 
+-- Init
 if not _G.Skillinfo then
 	_G.Skillinfo = _G.Skillinfo or {}
 	Skillinfo._path = ModPath
@@ -12,11 +14,13 @@ if not _G.Skillinfo then
 		end
 	end
 end
-	
+
+--Keybind options menu localization
 Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_Skillinfo", function( loc )
     loc:load_localization_file( Skillinfo._path .. "loc/en.json")
 end)
-	
+
+--Keybind Setup
 Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_Skillinfo", function(menu_manager)
 	MenuCallbackHandler.SkillInfo = function(self)
 	    MenuCallbackHandler:Skill_Show()
@@ -24,6 +28,7 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_Skillinfo", function(m
 	MenuHelper:LoadFromJsonFile(Skillinfo._path .. "keybind.json", Skillinfo, Skillinfo._data)
 end)
 
+--Callback for the overlay keybind
 function MenuCallbackHandler:Skill_Show()
 	if managers.network:session() and Utils:IsInHeist()then
 		Skillinfo:Information_To_HUD(managers.network:session():peer(_G.LuaNetworking:LocalPeerID()))
@@ -34,6 +39,7 @@ function MenuCallbackHandler:Skill_Show()
 	end
 end
 
+--Skill formating
 function Skillinfo:NumberFormat(input_data)
 	local array = {}
 	for i=1,#input_data do
@@ -67,6 +73,7 @@ function Skillinfo:RemovePlayerData(peer_id)
     end
 end
 
+--Skill Information
 function Skillinfo:Information_To_HUD(peer)
     if peer ~= nil then
         if peer:is_outfit_loaded() then
@@ -83,6 +90,7 @@ function Skillinfo:Information_To_HUD(peer)
     end
 end
 
+--Overlay display
 function Skillinfo:InfoPanel()
     if not Skillinfo.overlay then
         Skillinfo.overlay = Overlay:newgui():create_screen_workspace() or {}
