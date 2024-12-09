@@ -6,8 +6,7 @@ if not _G.Skillinfo then
     Skillinfo._data_path = SavePath .. "skillinfo.json"
     Skillinfo._data = {} 
 	Skillinfo.Players = {}
-	local num_player_slots = BigLobbyGlobals and BigLobbyGlobals:num_player_slots() or 4
-	for i=1,num_player_slots do
+	for i=1,4 do
 		Skillinfo.Players[i] = {}
 		for j=1,9 do
 			Skillinfo.Players[i][j] = 0
@@ -54,21 +53,6 @@ function MenuCallbackHandler:Skill_Show()
 	end
 end
 
-function Skillinfo:Skills(peer_id)
-	if managers.network:session() and managers.network:session():peers() then
-		local peer = managers.network:session():peer(peer_id)
-		if peer then
-			if peer:skills() ~= nil then
-				local skills = string.split(string.split(peer:skills(), "-")[1], "_")
-				local perk_deck = string.split(string.split(peer:skills(), "-")[2], "_")
-				local perk_deck_id = tonumber(perk_deck[1])
-				local perk_deck_completion = tonumber(perk_deck[2])
-				local message = peer:name().. Skillinfo:Text_Formatting(skills, managers.localization:text("menu_st_spec_" .. perk_deck_id), perk_deck_completion)
-			end
-		end
-	end
-end
-
 function Skillinfo:NumberFormat(input_data)
 	local array = {}
 	for i=1,#input_data do
@@ -81,9 +65,7 @@ function Skillinfo:NumberFormat(input_data)
 end
 
 function Skillinfo:Text_Formatting(skills, perk_deck, completion)
-	local sk = {}
 	local skill_string = {}
-	local number = 0
 	if #skills == 15 then
 		skill_string = Skillinfo:NumberFormat(skills)
 		if perk_deck and completion then
@@ -112,67 +94,57 @@ function Skillinfo:Information_To_HUD(peer)
                 local skills = string.split(skills_perk_deck_info[1], "_")
                 local perk_deck = string.split(skills_perk_deck_info[2], "_")
                 local p = managers.localization:text("menu_st_spec_" .. perk_deck[1])
+
+                -- Simplified stats display: just store the name and simplified skill data
                 Skillinfo.Players[peer:id()][3] = peer:name() .. Skillinfo:Text_Formatting(skills, p, perk_deck[2])    
             end
         end
     end
 end
 
-function Skillinfo:InfoPanel(message, color, message2, message3, message4)
-	local num_player_slots = BigLobbyGlobals and BigLobbyGlobals:num_player_slots() or 4
-	if not Skillinfo.overlay then
-		Skillinfo.overlay = Overlay:newgui():create_screen_workspace() or {}
-		Skillinfo.fonttype = tweak_data.menu.pd2_small_font
-		Skillinfo.fontsize = tweak_data.menu.pd2_small_font_size
-		if RenderSettings.resolution.x >= 800 and RenderSettings.resolution.x < 1024 then
-			Skillinfo.fontsize = 14
-		elseif RenderSettings.resolution.x >= 1024 and RenderSettings.resolution.x < 1360 then
-			Skillinfo.fontsize = 18
-		elseif RenderSettings.resolution.x >= 1360 and RenderSettings.resolution.x < 1920 then
-			Skillinfo.fontsize = 22
-		elseif RenderSettings.resolution.x >= 1920 and RenderSettings.resolution.x < 2560 then
-			Skillinfo.fontsize = 28
-		else
-			Skillinfo.fontsize = 32
-		end
-		Skillinfo.stats = {}
-		Skillinfo.mod = Skillinfo.overlay:panel():text{name = "mod", x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/4) + 4.7/9 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = Color("ffffff"), layer = 1}
-		local pos = 5
-		for i=1, num_player_slots do
-			Skillinfo.stats[i] = Skillinfo.overlay:panel():text{name = "name" .. i, x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/1) + pos/4 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = tweak_data.chat_colors[i], layer = 1}
-			pos = pos + 0.3
-		end
-	end
-	Skillinfo.mod:show()
-	if not message then
-		for i=1,num_player_slots do
-			if Skillinfo.Players[i][3] ~= 0 then
-				Skillinfo.stats[i]:set_text((Skillinfo.Players[i][3]))
-				Skillinfo.stats[i]:show()
-			end
-		end
-	else
-		Skillinfo.stats[1]:set_text(message)
-		Skillinfo.stats[1]:show()
-		if message2 then
-			Skillinfo.stats[2]:set_text(message2)
-			Skillinfo.stats[2]:show()
-		end
-		if message3 then
-			Skillinfo.stats[3]:set_text(message3)
-			Skillinfo.stats[3]:show()
-		end
-		if message4 then
-			Skillinfo.stats[4]:set_text(message4)
-			Skillinfo.stats[4]:show()
-		end
-	end
-	DelayedCalls:Add("Skillinfo:Timed_Remove", display_time, function()
-		if Skillinfo.overlay then
-			Skillinfo.mod:hide()
-			for i=1,num_player_slots do
-				Skillinfo.stats[i]:hide()
-			end
-		end
-	end)
+function Skillinfo:InfoPanel()
+    if not Skillinfo.overlay then
+        Skillinfo.overlay = Overlay:newgui():create_screen_workspace() or {}
+        Skillinfo.fonttype = tweak_data.menu.pd2_small_font
+        Skillinfo.fontsize = tweak_data.menu.pd2_small_font_size
+        -- Adjust font size based on resolution
+        if RenderSettings.resolution.x >= 800 and RenderSettings.resolution.x < 1024 then
+            Skillinfo.fontsize = 14
+        elseif RenderSettings.resolution.x >= 1024 and RenderSettings.resolution.x < 1360 then
+            Skillinfo.fontsize = 18
+        elseif RenderSettings.resolution.x >= 1360 and RenderSettings.resolution.x < 1920 then
+            Skillinfo.fontsize = 22
+        elseif RenderSettings.resolution.x >= 1920 and RenderSettings.resolution.x < 2560 then
+            Skillinfo.fontsize = 28
+        else
+            Skillinfo.fontsize = 32
+        end
+        Skillinfo.stats = {}
+        Skillinfo.display = Skillinfo.overlay:panel()
+        local pos = 5
+        -- Set up stats display for each player
+        for i=1, 4 do
+            Skillinfo.stats[i] = Skillinfo.overlay:panel():text{name = "name" .. i, x = - (RenderSettings.resolution.x/2.1) + 0.5 * RenderSettings.resolution.x, y = - (RenderSettings.resolution.y/1) + pos/4 * RenderSettings.resolution.y, font = Skillinfo.fonttype, font_size = Skillinfo.fontsize, color = tweak_data.chat_colors[i], layer = 1}
+            pos = pos + 0.3
+        end
+    end
+    Skillinfo.display:show()
+
+    -- Display the simplified player stats
+    for i=1,4 do
+        if Skillinfo.Players[i][3] ~= 0 then
+            Skillinfo.stats[i]:set_text(Skillinfo.Players[i][3])  -- Only display the simplified skill data
+            Skillinfo.stats[i]:show()
+        end
+    end
+
+    -- Hide after the display time
+    DelayedCalls:Add("Skillinfo:Timed_Remove", display_time, function()
+        if Skillinfo.overlay then
+            Skillinfo.display:hide()
+            for i=1,4 do
+                Skillinfo.stats[i]:hide()
+            end
+        end
+    end)
 end
