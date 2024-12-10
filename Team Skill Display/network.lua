@@ -1,3 +1,11 @@
-Hooks:PostHook(BaseNetworkSession, "_on_peer_removed", "BaseNetworkSession_on_peer_removed", function (self, peer, peer_id, ...)
-Skillinfo:RemovePlayerData(peer:id())
-end)
+if RequiredScript == "lib/network/base/networkpeer" then
+
+	Hooks:Add("NetworkManagerOnPeerAdded", "NoobJoin:PeerAdded", function(peer, peer_id)
+	end)
+
+	Hooks:Add("BaseNetworkSessionOnPeerRemoved", "NoobJoin:PeerRemoved", function(peer, peer_id, ...)
+		for j=1,9 do -- Skill printed, cheater, skills for overlay, join time, hours played
+			Skillinfo.Players[peer_id][j] = 0
+		end
+	end)
+end

@@ -11,7 +11,7 @@
 			"title" : "skillinfo_team_skill_title",
 			"description" : "skillinfo_team_skill_desc",
 			"keybind_id" : "Skill_display_id",
-			"run_in_menu" : false,
+			"run_in_menu" : true,
 			"run_in_game" : true,
 			"func" : "SkillInfo"
 		}
