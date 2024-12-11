@@ -2,39 +2,39 @@ local fade_duration = 0.4
 local fade_steps = 25
 
 if RequiredScript == "lib/managers/menumanager" then
-    if not _G.Skillinfo then
-        _G.Skillinfo = _G.Skillinfo or {}
-        Skillinfo._path = ModPath
-        Skillinfo._data = {}
-        Skillinfo._data_path = SavePath .. "Skillinfo.txt"
-        Skillinfo.Players = {}
-        for i=1,4 do
-            Skillinfo.Players[i] = {}
-            for j=1,9 do
-                Skillinfo.Players[i][j] = 0
-            end
-        end
-    end
+	if not _G.Skillinfo then
+		_G.Skillinfo = _G.Skillinfo or {}
+		Skillinfo._path = ModPath
+		Skillinfo._data = {}
+		Skillinfo._data_path = SavePath .. "Skillinfo.txt"
+		Skillinfo.Players = {}
+		for i=1,4 do
+			Skillinfo.Players[i] = {}
+			for j=1,9 do
+				Skillinfo.Players[i][j] = 0
+			end
+		end
+	end
 	
 	function Skillinfo:Save()
-	    local file = io.open( self._data_path, "w+" )
-	    if file then
-	    	file:write( json.encode( self._data ) )
-	    	file:close()
-    	end
-    end
+		local file = io.open( self._data_path, "w+" )
+		if file then
+			file:write( json.encode( self._data ) )
+			file:close()
+		end
+	end
 
-    function Skillinfo:Load()
-    	local file = io.open( self._data_path, "r" )
-    	if file then
-    		self._data = json.decode( file:read("*all") )
-    		file:close()
-    	end
-    end
+	function Skillinfo:Load()
+		local file = io.open( self._data_path, "r" )
+		if file then
+			self._data = json.decode( file:read("*all") )
+			file:close()
+		end
+	end
 	
 	function Skillinfo:GetOption(id)
-	    return self._data[id]
-    end
+		return self._data[id]
+	end
 
 	Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_Skillinfo", function( loc )
 		loc:load_localization_file( Skillinfo._path .. "Loc/en.json")
@@ -45,21 +45,21 @@ if RequiredScript == "lib/managers/menumanager" then
 			MenuCallbackHandler:Skill_Show()
 		end
 		MenuCallbackHandler.callback_detailed_skills = function(self, item)
-    		Skillinfo._data.detailed_skills = (item:value() == "on" and true or false)
-    		Skillinfo:Save()
-    	end
+			Skillinfo._data.detailed_skills = (item:value() == "on" and true or false)
+			Skillinfo:Save()
+		end
 		MenuCallbackHandler.callback_delay_time = function(self, item)
-            Skillinfo._data.delay_time = item:value()
-		    Skillinfo:Save()
-        end
+			Skillinfo._data.delay_time = item:value()
+			Skillinfo:Save()
+		end
 		MenuCallbackHandler.callback_font_size = function(self, item)
-            Skillinfo._data.font_size = item:value()
-		    Skillinfo:Save()
-        end
+			Skillinfo._data.font_size = item:value()
+			Skillinfo:Save()
+		end
 		MenuCallbackHandler.callback_use_tab = function(self, item)
-    		Skillinfo._data.use_tab = (item:value() == "on" and true or false)
-    		Skillinfo:Save()
-    	end
+			Skillinfo._data.use_tab = (item:value() == "on" and true or false)
+			Skillinfo:Save()
+		end
 		Skillinfo:Load()
 		MenuHelper:LoadFromJsonFile(Skillinfo._path .. "Options/options.json", Skillinfo, Skillinfo._data)
 	end)
@@ -74,15 +74,15 @@ if RequiredScript == "lib/managers/menumanager" then
 		end
 	end
 
-    function Skillinfo:FadeEffect(panel, fade_direction, duration, steps)
-        local fade_increment = 1 / steps
-        for step = 1, steps do
-            local alpha_value = fade_direction == "in" and fade_increment * step or 1 - fade_increment * step
-            DelayedCalls:Add("Skillinfo:Fade_" .. panel:name() .. "_" .. step, (step - 1) * (duration / steps), function()
-                panel:set_alpha(alpha_value)
-            end)
-        end
-    end
+	function Skillinfo:FadeEffect(panel, fade_direction, duration, steps)
+		local fade_increment = 1 / steps
+		for step = 1, steps do
+			local alpha_value = fade_direction == "in" and fade_increment * step or 1 - fade_increment * step
+			DelayedCalls:Add("Skillinfo:Fade_" .. panel:name() .. "_" .. step, (step - 1) * (duration / steps), function()
+				panel:set_alpha(alpha_value)
+			end)
+		end
+	end
 
 	function Skillinfo:NumberFormat(input_data)
 		local array = {}
@@ -206,9 +206,9 @@ if RequiredScript == "lib/network/base/networkpeer" then
 	end)
 
 	Hooks:Add("BaseNetworkSessionOnPeerRemoved", "Skillinfo:PeerRemoved", function(peer, peer_id)
-        for j = 1, 9 do
-            Skillinfo.Players[peer_id][j] = 0
-        end
+		for j = 1, 9 do
+			Skillinfo.Players[peer_id][j] = 0
+		end
 
 		for i = 1, 4 do
 			if Skillinfo.stats and Skillinfo.stats[i]:alpha() > 0 then
@@ -216,7 +216,7 @@ if RequiredScript == "lib/network/base/networkpeer" then
 			end
 		end
 
-        Skillinfo:UpdatePanelPositions()
+		Skillinfo:UpdatePanelPositions()
 	end)
 end
 
