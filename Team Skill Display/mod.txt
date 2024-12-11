@@ -2,13 +2,14 @@
 	"blt_version" : 2,
 	"name" : "Team Stat Display",
 	"description" : "Adds a keybind to display player skills and perkdeck on the hud",
-	"author" : "Eightan",
+	"author" : "Eightan / FishTaco",
 	"version" : "1.0.0",
 	"image" : "icon.png",
 	"color" : "0.15 0.15 0.15",
 	"hooks" :
 	[
 		{"hook_id" : "lib/managers/menumanager", "script_path" : "StatDisplay.lua"},
+		{"hook_id" : "lib/managers/hudmanagerpd2", "script_path" : "StatDisplay.lua"},
 		{"hook_id" : "lib/network/base/networkpeer", "script_path" : "StatDisplay.lua"}
 	]
 }

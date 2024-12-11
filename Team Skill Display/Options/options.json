@@ -1,0 +1,69 @@
+{
+	"menu_id" : "skillinfo_options_menu",
+	"parent_menu_id" : "blt_options",
+	"title" : "skillinfo_options",
+	"description" : "skillinfo_options_desc",
+	"items" : 
+	[
+		{
+			"type" : "keybind",
+			"id" : "skillinfo_skill_overlay",
+			"title" : "skillinfo_team_skill_title",
+			"description" : "skillinfo_team_skill_desc",
+			"keybind_id" : "Skill_display_id",
+			"run_in_menu" : false,
+			"run_in_game" : true,
+			"func" : "SkillInfo"
+		},
+		{
+			"type": "slider",
+			"id": "skillinfo_delay_time_slider",
+			"title": "skillinfo_delay_time_title",
+			"description": "skillinfo_delay_time_desc",
+			"callback": "callback_delay_time",
+			"value": "delay_time",
+			"max": 20,
+			"min": 1,
+			"step": 0.5,
+			"default_value": 8
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type": "slider",
+			"id": "skillinfo_font_size_slider",
+			"title": "skillinfo_font_size_title",
+			"description": "skillinfo_font_size_desc",
+			"callback": "callback_font_size",
+			"value": "font_size",
+			"max": 35,
+			"min": 10,
+			"step": 0.5,
+			"default_value": 20
+		},
+		{
+			"type" : "toggle",
+			"id" : "skillinfo_detailed_skills_id",
+			"title" : "skillinfo_detailed_skills_title",
+			"description" : "skillinfo_detailed_skills_desc",
+			"callback" : "callback_detailed_skills",
+			"value" : "detailed_skills",
+			"default_value" : false
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "toggle",
+			"id" : "skillinfo_use_tab_id",
+			"title" : "skillinfo_use_tab_title",
+			"description" : "skillinfo_use_tab_desc",
+			"callback" : "callback_use_tab",
+			"value" : "use_tab",
+			"default_value" : false
+		}
+	]
+}

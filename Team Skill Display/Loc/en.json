@@ -1,0 +1,14 @@
+{
+	"skillinfo_options" : "Team Skill Display",
+	"skillinfo_options_desc" : "Options menu.",
+	"skillinfo_team_skill_title" : "Show Skill Display",
+	"skillinfo_team_skill_desc" : "Skill display keybind.",
+	"skillinfo_delay_time_title" : "Display Time",
+	"skillinfo_delay_time_desc" : "Set how long the skills will display on the screen.",
+	"skillinfo_font_size_title" : "Text Size",
+	"skillinfo_font_size_desc" : "Change the text size.",
+	"skillinfo_detailed_skills_title" : "Detailed Skills",
+	"skillinfo_detailed_skills_desc" : "Show each skill for each subtree in the skill display.",
+	"skillinfo_use_tab_title" : "Display the skillinfo when pressing tab",
+	"skillinfo_use_tab_desc" : "Pressing tab will display the skills. \n Probably only useful for MUI users."
+}
