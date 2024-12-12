@@ -22,7 +22,7 @@
 			"description": "skillinfo_delay_time_desc",
 			"callback": "callback_delay_time",
 			"value": "delay_time",
-			"max": 20,
+			"max": 30,
 			"min": 1,
 			"step": 0.5,
 			"default_value": 8

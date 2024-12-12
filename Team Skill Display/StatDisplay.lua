@@ -198,9 +198,8 @@ if RequiredScript == "lib/managers/menumanager" then
 			end)
 		end)
 	end
-end
 
-if RequiredScript == "lib/network/base/networkpeer" then
+elseif RequiredScript == "lib/network/base/networkpeer" then
 	Hooks:Add("NetworkManagerOnPeerAdded", "Skillinfo:PeerAdded", function()
 		Skillinfo:UpdatePanelPositions()
 	end)
@@ -218,9 +217,8 @@ if RequiredScript == "lib/network/base/networkpeer" then
 
 		Skillinfo:UpdatePanelPositions()
 	end)
-end
 
-if RequiredScript == "lib/managers/hudmanagerpd2" then	
+elseif RequiredScript == "lib/managers/hudmanagerpd2" then	
 	Hooks:PostHook(HUDManager, "show_stats_screen", "HUDManager_show_stats_screen_skillinfo", function (self)
 		if managers.network:session() and Utils:IsInHeist() and Skillinfo:GetOption("use_tab") then
 			Skillinfo:Information_To_HUD(managers.network:session():peer(_G.LuaNetworking:LocalPeerID()))
@@ -237,6 +235,15 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 				if Skillinfo.stats and Skillinfo.stats[i]:alpha() > 0 then
 					Skillinfo:FadeEffect(Skillinfo.stats[i], "out", fade_duration, fade_steps)
 				end
+			end
+		end
+	end)
+
+elseif RequiredScript == "lib/utils/accelbyte/telemetry" then
+	Hooks:PostHook(Telemetry, "on_end_heist", "skillinfo_on_end_heist", function(self)
+		for i = 1, 4 do
+			if Skillinfo.stats and Skillinfo.stats[i]:alpha() > 0 then
+				Skillinfo.stats[i]:hide()
 			end
 		end
 	end)
